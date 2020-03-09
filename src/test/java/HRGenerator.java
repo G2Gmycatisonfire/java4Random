@@ -103,7 +103,7 @@ public class HRGenerator {
         int which;
         for(Resident r : this.residents){
             preferences.clear();
-            int howMany = Math.min(this.getResidentChoiceCount(), this.hospitals.length);
+            int howMany = Math.max(Math.min(this.getResidentChoiceCount(), this.hospitals.length),1);
             if(howMany < 0)
                 howMany = Math.min(5, this.hospitalCount);
             Hospital[] prefs = new Hospital[howMany];
@@ -124,7 +124,7 @@ public class HRGenerator {
         int which;
         for(Hospital h : this.hospitals){
             preferences.clear();
-            int howMany = Math.min((int)(Math.random() * this.maxHospitalCapacity) + this.maxHospitalCapacity, this.residentCount);
+            int howMany = Math.max(Math.min((int)(Math.random() * this.maxHospitalCapacity) + this.maxHospitalCapacity, this.residentCount), 1);
             if(howMany < 0)
                 howMany = Math.min(5, this.residentCount);
             Resident[] prefs = new Resident[howMany];

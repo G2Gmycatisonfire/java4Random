@@ -1,6 +1,5 @@
 @startuml
 
-
 abstract class Element
 
 class Hospital extends Element
@@ -13,10 +12,14 @@ class Element
 class Solution
 class GaleShapely implements Algorithm
 class Builder
-
+class HRGenerator
+class HRBuilder
 interface Algorithm
 
+HRBuilder +-- HRGenerator : builds
 Builder +-- Problem : builds
+
+HRGenerator "1" *-- "1..." Problem
 
 Resident "1" o-- "1..." Hospital : prefers
 Hospital "1" o-- "1..." Resident : prefers

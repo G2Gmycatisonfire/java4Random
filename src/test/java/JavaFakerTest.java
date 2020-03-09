@@ -27,13 +27,13 @@ public class JavaFakerTest {
             System.out.println(h);
 
         for(Resident r : test.getResidents()){
-            System.out.println(r.getPreferences().toString());
+            System.out.println(r.getName() + " " + r.getPreferences().size() + r.getPreferences().toString());
         }
 
         System.out.println("\n");
 
         for(Hospital h : test.getHospitals()){
-            System.out.println(h.getPreferences().toString());
+            System.out.println(h.getName() + " " + h.getPreferences().size() + h.getPreferences().toString());
         }
 
         Problem p = new Problem.Builder()

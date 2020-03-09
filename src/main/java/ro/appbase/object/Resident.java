@@ -35,6 +35,7 @@ public class Resident extends Element {
 
     @Override
     public Element getNextTryout() {
+        System.out.println("trying for "+  this.toString());
         return Objects.requireNonNull(this.preferences
                 .entrySet()
                 .stream()
