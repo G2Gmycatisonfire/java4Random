@@ -1,0 +1,167 @@
+@startuml
+
+
+abstract class Element
+
+class Hospital extends Element
+class Resident extends Element
+
+class Problem
+class Matching
+class Partition
+class Element
+class Solution
+class GaleShapely implements Algorithm
+class Builder
+
+interface Algorithm
+
+Builder +-- Problem : builds
+
+Resident "1" o-- "1..." Hospital : prefers
+Hospital "1" o-- "1..." Resident : prefers
+
+Problem "1" *-- "1..." Resident : contains
+Problem "1" *-- "1..." Hospital : contains
+
+Problem "1" o-- "1..." Solution : has
+Problem "1" *-- "2" Partition : creates
+
+Solution "1" o-- "1" Matching : has
+
+Problem "1" *-- "1" GaleShapely
+
+GaleShapely "1" *-- "1..." Solution : generates
+GaleShapely "1" *-- "1..." Matching : creates
+
+Partition "1" o-- "1..." Element
+
+class Solution{
+    Matching matching : private
+    Solution(Matching) : public
+    String toString() : public
+}
+
+class Matching{
+    Set<Pair<Element, Element>> edges : private
+    Matching() : public
+    void addEdge(Element, Element) : public
+    Matching addAllEdges(Partition) : public
+    Set<Pair<Element, Element>> getEdges() : public
+}
+
+class Partition{
+    Set<Element> V : private
+    Partition(Set<Hospital>) : public
+    Partition(List<Resident>) : public
+    Set<Element> getV() : public
+    String toString() : public
+}
+
+class Resident{
+    Map<Integer, Hospital> preferences : private
+    Resident(String) : public
+    void setPreferences(Hospital ...) : public
+}
+
+class Hospital{
+    Map<Integer, Resident> preferences : private
+
+    Hospital(String, Integer) : public
+    void setPreferences(Resident ...) : public
+}
+
+abstract class Element{
+    Integer capacity : protected
+    String name : protected
+    Set<Element> assignedTo : protected
+    Set<Element> tryouts : protected
+
+    Element(String, Integer) : protected
+    Set<Element> getTryouts() : public
+    Set<Element> getAssignedTo() : public
+    void free() : public
+    boolean canAssign() : public
+    void assign() : public
+    String getName() : public
+    boolean equals(Element) : public
+
+    Integer getCapacity() : public abstract
+    Map<Integer, ?> getPreferences() : public abstract
+    String toString() : public abstract
+    Element getNextTryout() : public abstract
+    Element getLeastAppealingAssignee() : public abstract
+    Integer getPreference() : public abstract
+}
+
+class Problem{
+    Partition s : private
+    Partition t : private
+    List<Resident> residents : private
+    Set<Hospital> hospitals : private
+    Algorithm algorithm : private
+
+    Problem() : private
+    List<Resident> getResidents() : public
+    Set<Hospital> getHospitals() : public
+    String toString() : public
+    void printPreferences() : public
+    void printResidentsPreferences() : public
+    void printHospitalsPreferences() : public
+    String preferencesToString() : private
+    String residentsPreferencesToString() : private
+    String hospitalsPreferencesToString() : private
+    Partition getS() : public
+    Partition getT() : public
+    Algorithm getAlgorithm() : public
+}
+
+class Builder{
+    List<Resident> residents : private
+    Set<Hospital> hospitals : private
+
+    Builder withHospitals(Hospital ...) : public
+    Builder withResidents(Resident ...) : public
+    Problem build() : public
+}
+
+class GaleShapely{
+    Problem p : private
+    long startTime : private
+    long finishTime : private
+
+    GaleShapely(Problem) : public
+}
+
+interface Algorithm{
+    void start()
+    Solution getSolution()
+    long getNanoRuntime()
+    double getRuntime()
+}
+
+@enduml
+
+
+abstract class AbstractList
+abstract AbstractCollection
+interface List
+interface Collection
+
+List <|-- AbstractList
+Collection <|-- AbstractCollection
+
+Collection <|- List
+AbstractCollection <|- AbstractList
+AbstractList <|-- ArrayList
+
+class ArrayList {
+Object[] elementData
+size()
+}
+
+enum TimeUnit {
+DAYS
+HOURS
+MINUTES
+}
