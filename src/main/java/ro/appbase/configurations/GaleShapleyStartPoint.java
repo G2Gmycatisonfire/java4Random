@@ -8,6 +8,16 @@ import ro.appbase.utiltiy.concept.Solution;
 
 import java.util.Objects;
 import java.util.function.Predicate;
+
+/**
+ * CLass GaleShapleyStartPoint
+ *
+ * Source describing bonus requirement 2
+ *
+ * [BONUS]
+ *
+ * @author Loghin Vlad
+ */
 public class GaleShapleyStartPoint {
     public static void main(String[] args){
         Resident[] residents = new Resident[]{
@@ -37,32 +47,6 @@ public class GaleShapleyStartPoint {
                 .withResidents(residents)
                 .withAlgorithm(new GaleShapely())
                 .build();
-
-        //p.printPreferences();
-
-        Predicate<Resident> findsAcceptableH0 = r-> r.getPreferences()
-                .containsValue(hospitals[2]);
-        Predicate<Resident> findsAcceptableH2 = r-> r.getPreferences()
-                .containsValue(hospitals[0]);
-        p.getResidents().stream()
-            .filter(findsAcceptableH0.and(findsAcceptableH2))
-            .forEach(System.out::println);
-
-
-        p.getHospitals()
-                .stream()
-                .filter(h -> Objects.requireNonNull(h.getPreferences()
-                        .entrySet()
-                        .stream()
-                        .findFirst()
-                        .orElse(null))
-                        .getValue()
-                        .equals(residents[0]))
-                .forEach(System.out::println);
-
-        System.out.println(p);
-        System.out.println(p.getS());
-        System.out.println(p.getT());
 
         try{
             p.getAlgorithm().start();

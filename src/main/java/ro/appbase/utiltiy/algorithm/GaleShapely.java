@@ -1,13 +1,9 @@
 package ro.appbase.utiltiy.algorithm;
 
 import ro.appbase.object.Element;
-import ro.appbase.object.Resident;
 import ro.appbase.utiltiy.concept.Problem;
 import ro.appbase.utiltiy.concept.Solution;
 import ro.appbase.utiltiy.graph.Matching;
-import ro.appbase.utiltiy.graph.Partition;
-
-import java.util.Set;
 
 public class GaleShapely implements Algorithm {
     private Problem p;

@@ -9,10 +9,9 @@ public class PerfectMatchingChecker {
     public static boolean isMatchingPerfect(Problem p){
         for(Element e : p.getT().getV()){
             Element worstMatch = e.getLeastAppealingAssignee();
-            for(Element other : p.getS().getV()){
+            for(Element other : p.getS().getV())
                 if(e.getAssignedTo().contains(other) && e.getPreference(other) > e.getPreference(worstMatch))
                     return false;
-            }
         }
         return true;
     }

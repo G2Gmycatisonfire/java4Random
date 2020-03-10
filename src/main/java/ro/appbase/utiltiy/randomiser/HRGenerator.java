@@ -173,9 +173,8 @@ public class HRGenerator {
             Hospital[] prefs = new Hospital[howMany];
             for(int i = 0; i < howMany; i++){
                 which = (int)(Math.random() * this.hospitals.length);
-                while(preferences.contains(this.hospitals[which])){
+                while(preferences.contains(this.hospitals[which]))
                     which = (int)(Math.random()*this.hospitals.length);
-                }
                 preferences.add(this.hospitals[which]);
                 prefs[l++] = this.hospitals[which];
             }
@@ -200,13 +199,8 @@ public class HRGenerator {
 
             for(int i = 0; i < howMany; i++){
                 which = (int)(Math.random() * this.residents.length);
-                while(preferences.contains(this.residents[which])){
+                while(preferences.contains(this.residents[which]))
                     which = (int)(Math.random() * this.residents.length);
-                }
-
-                System.out.println(which + " "+ l + " " + i);
-
-
                 preferences.add(this.residents[which]);
                 prefs[l++] = this.residents[which];
             }

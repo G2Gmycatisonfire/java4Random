@@ -4,11 +4,18 @@ import ro.appbase.object.Hospital;
 import ro.appbase.object.Resident;
 import ro.appbase.utiltiy.algorithm.PriorityAssignment;
 import ro.appbase.utiltiy.concept.Problem;
-import ro.appbase.utiltiy.concept.Solution;
 import ro.appbase.utiltiy.graph.PerfectMatchingChecker;
 
-import java.util.Objects;
-import java.util.function.Predicate;
+
+/**
+ * Class PriorityAssignmentStartPoint
+ *
+ * Source describing optional requirement 1, 2 and 4
+ *
+ * [OPTIONAL]
+ *
+ * @author Loghin Vlad
+ */
 public class PriorityAssignmentStartPoint {
     public static void main(String[] args){
         Resident[] residents = new Resident[]{
@@ -33,6 +40,9 @@ public class PriorityAssignmentStartPoint {
         hospitals[1].setPreferences(residents[0], residents[2], residents[1]);
         hospitals[2].setPreferences(residents[0], residents[1], residents[3]);
 
+        ///CLASSES DESCRIBING HR PROBLEM IN PROBLEM CLASS
+
+        ///PRIORITY ASSIGNMENT = ALGORITHM IMPLEMENTED (HOSPITALS CHOOSING BEST RESIDENTS)
         Problem p = new Problem.Builder()
                 .withHospitals(hospitals)
                 .withResidents(residents)
@@ -50,6 +60,7 @@ public class PriorityAssignmentStartPoint {
 
         System.out.println(p.getAlgorithm().getSolution());
 
+        ///VERIFY IF MATCHING IS STABLE
         System.out.println(PerfectMatchingChecker.isMatchingPerfect(p));
     }
 }

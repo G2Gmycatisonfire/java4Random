@@ -4,11 +4,9 @@ import ro.appbase.object.Element;
 import ro.appbase.object.Hospital;
 import ro.appbase.object.Resident;
 import ro.appbase.utiltiy.algorithm.Algorithm;
-import ro.appbase.utiltiy.algorithm.GaleShapely;
 import ro.appbase.utiltiy.graph.Partition;
 
 import java.util.*;
-import java.util.stream.Collectors;
 
 public class Problem {
     private Partition s;

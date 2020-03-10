@@ -3,7 +3,6 @@ package ro.appbase.object;
 import javafx.util.Pair;
 
 import java.util.*;
-import java.util.stream.Stream;
 
 public class Resident extends Element {
 
@@ -57,8 +56,6 @@ public class Resident extends Element {
     public Element getNextTryout() {
         if(this.tryouts.containsAll(this.preferences.values()))
             return null;
-        //.out.println("trying for "+  this.toString());
-        //System.out.println(this.getPreferences().toString() + "\n" + this.getTryouts().toString());
         return Objects.requireNonNull(this.preferences
                 .entrySet()
                 .stream()
@@ -70,26 +67,18 @@ public class Resident extends Element {
 
     @Override
     public Element getLeastAppealingAssignee() {
-        //System.out.println("...Start find worst match debug");
         Element leastAppealing = null;
-        for(Element pair : this.preferences.values()){
-            //System.out.println(this);
-            //System.out.println(pair);
-            if(this.assignedTo.contains(pair)){
+        for(Element pair : this.preferences.values())
+            if(this.assignedTo.contains(pair))
                 leastAppealing = pair;
-                //System.out.println(pair);
-            }
-        }
-        //System.out.println("...End find worst match debug");
         return leastAppealing;
     }
 
     @Override
     public int getPreference(Element obj){
-        for(Integer key : this.preferences.keySet()){
+        for(Integer key : this.preferences.keySet())
             if( this.preferences.get(key).equals(obj) )
                 return this.priority.get(obj);
-        }
         return Integer.MAX_VALUE;
     }
 }

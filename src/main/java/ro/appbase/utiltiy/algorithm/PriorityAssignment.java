@@ -1,15 +1,9 @@
 package ro.appbase.utiltiy.algorithm;
 
 import ro.appbase.object.Element;
-import ro.appbase.object.Hospital;
-import ro.appbase.object.Resident;
-import ro.appbase.utiltiy.algorithm.Algorithm;
 import ro.appbase.utiltiy.concept.Problem;
 import ro.appbase.utiltiy.concept.Solution;
 import ro.appbase.utiltiy.graph.Matching;
-
-import java.util.HashMap;
-import java.util.PriorityQueue;
 
 public class PriorityAssignment implements Algorithm {
     private Problem p;

@@ -72,21 +72,17 @@ public class Hospital extends Element {
     @Override
     public Element getLeastAppealingAssignee() {
         Element leastAppealing = null;
-        for(Element pair : this.preferences.values()){
-            if(this.assignedTo.contains(pair)){
+        for(Element pair : this.preferences.values())
+            if(this.assignedTo.contains(pair))
                 leastAppealing = pair;
-            }
-        }
         return leastAppealing;
     }
     public int getPreference(Element obj){
         if(!this.preferences.containsValue(obj))
             return Integer.MAX_VALUE;
-        for(Integer key : this.preferences.keySet()){
-            if( this.preferences.get(key).equals(obj) ) {
+        for(Integer key : this.preferences.keySet())
+            if( this.preferences.get(key).equals(obj) )
                 return key;
-            }
-        }
         return Integer.MAX_VALUE;
     }
 }
