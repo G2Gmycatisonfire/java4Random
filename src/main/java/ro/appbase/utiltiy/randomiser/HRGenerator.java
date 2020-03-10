@@ -1,15 +1,15 @@
+package ro.appbase.utiltiy.randomiser;
+
 import com.github.javafaker.Faker;
-import org.yaml.snakeyaml.tokens.BlockEndToken;
 import ro.appbase.object.*;
 
-import javax.xml.bind.annotation.XmlType;
-import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Set;
 
 public class HRGenerator {
 
     public enum ResidentParameters{
+        RATES_ALL,
         PARANOID,
         RESPONSIBLE,
         ATTENTIVE,
@@ -20,6 +20,7 @@ public class HRGenerator {
     }
 
     public enum HospitalParameters{
+        RATES_ALL,
         IN_CRISIS,
         UNDERSTAFFED,
         COMPETENT_STAFF,
@@ -54,6 +55,9 @@ public class HRGenerator {
         private ResidentParameters residentBehaviour = DEFAULT_RESIDENT_BEHAVIOUR;
         private HospitalParameters hospitalBehaviour = DEFAULT_HOSPITAL_BEHAVIOUR;
 
+        private boolean doubleCheckResidents = false;
+        private boolean doubleCheckHospitals = false;
+
         public HRBuilder withResidentCount(int residentCount){
             this.residentCount = residentCount;
             return this;
@@ -79,6 +83,16 @@ public class HRGenerator {
             return this;
         }
 
+        public HRBuilder doubleCheckForUnwantedResidents(boolean doubleCheck){
+            this.doubleCheckResidents = doubleCheck;
+            return this;
+        }
+
+        public HRBuilder doubleCheckForUnwantedHospitals(boolean doubleCheck){
+            this.doubleCheckHospitals = doubleCheck;
+            return this;
+        }
+
         public HRGenerator build(){
             HRGenerator generated = new HRGenerator();
 
@@ -94,7 +108,58 @@ public class HRGenerator {
             generated.generateHospitals();
             generated.assign();
 
+            if(this.doubleCheckResidents)
+                generated.checkForUnassignedResidents();
+            if(this.doubleCheckHospitals)
+                generated.checkForUnassignedHospitals();
+
             return generated;
+        }
+    }
+
+    private void checkForUnassignedResidents() throws NullPointerException{
+        for(Resident r : this.residents){
+            boolean hasHospital = false;
+            int minimumNumberOfResidents = Integer.MAX_VALUE;
+            Hospital hospitalWithMinimumResidents = null;
+            for(Hospital h : this.hospitals){
+                if(h.getPreferences().size() < minimumNumberOfResidents){
+                    minimumNumberOfResidents = h.getPreferences().size();
+                    hospitalWithMinimumResidents = h;
+                }
+
+                if(h.getPreferences().containsValue(r))
+                    hasHospital = true;
+            }
+
+            if(!hasHospital){
+                if(hospitalWithMinimumResidents == null)
+                    throw new NullPointerException("Cannot get here");
+                hospitalWithMinimumResidents.addResidentToPreferences(r);
+            }
+        }
+    }
+
+    private void checkForUnassignedHospitals() throws NullPointerException{
+        for(Hospital h : this.hospitals){
+            boolean hasResident = false;
+            int minimumNumberOfHospitals = Integer.MAX_VALUE;
+            Resident residentWithMinimumHospitals = null;
+            for(Resident r : this.residents){
+                if(r.getPreferences().size() < minimumNumberOfHospitals){
+                    minimumNumberOfHospitals = r.getPreferences().size();
+                    residentWithMinimumHospitals = r;
+                }
+
+                if(r.getPreferences().containsValue(h))
+                    hasResident = true;
+            }
+
+            if(!hasResident){
+                if(residentWithMinimumHospitals == null)
+                    throw new NullPointerException("Cannot get here either");
+                residentWithMinimumHospitals.addHospitalToPreferences(h);
+            }
         }
     }
 
@@ -102,19 +167,18 @@ public class HRGenerator {
         Set<Hospital> preferences = new HashSet<>();
         int which;
         for(Resident r : this.residents){
+            int l = 0;
             preferences.clear();
             int howMany = Math.max(Math.min(this.getResidentChoiceCount(), this.hospitals.length),1);
-            if(howMany < 0)
-                howMany = Math.min(5, this.hospitalCount);
             Hospital[] prefs = new Hospital[howMany];
             for(int i = 0; i < howMany; i++){
                 which = (int)(Math.random() * this.hospitals.length);
                 while(preferences.contains(this.hospitals[which])){
-                    which = (++which)%this.hospitals.length;
+                    which = (int)(Math.random()*this.hospitals.length);
                 }
                 preferences.add(this.hospitals[which]);
+                prefs[l++] = this.hospitals[which];
             }
-            preferences.toArray(prefs);
             r.setPreferences(prefs);
         }
     }
@@ -123,8 +187,13 @@ public class HRGenerator {
         Set<Resident> preferences = new HashSet<>();
         int which;
         for(Hospital h : this.hospitals){
+            int l = 0;
             preferences.clear();
             int howMany = Math.max(Math.min((int)(Math.random() * this.maxHospitalCapacity) + this.maxHospitalCapacity, this.residentCount), 1);
+
+            if(this.hospitalBehaviour == HospitalParameters.RATES_ALL)
+                howMany = this.residentCount;
+
             if(howMany < 0)
                 howMany = Math.min(5, this.residentCount);
             Resident[] prefs = new Resident[howMany];
@@ -132,12 +201,15 @@ public class HRGenerator {
             for(int i = 0; i < howMany; i++){
                 which = (int)(Math.random() * this.residents.length);
                 while(preferences.contains(this.residents[which])){
-                    which = (++which)%this.residents.length;
+                    which = (int)(Math.random() * this.residents.length);
                 }
 
+                System.out.println(which + " "+ l + " " + i);
+
+
                 preferences.add(this.residents[which]);
+                prefs[l++] = this.residents[which];
             }
-            preferences.toArray(prefs);
             h.setPreferences(prefs);
         }
     }
@@ -155,6 +227,7 @@ public class HRGenerator {
 
     private int getResidentChoiceCount(){
         switch(this.residentBehaviour){
+            case RATES_ALL:     return this.hospitals.length;
             case RESPONSIBLE:   return (int)(Math.random() * this.hospitals.length) - this.hospitals.length/8;
             case ATTENTIVE:     return (int)(Math.random() * this.hospitals.length) - this.hospitals.length/4;
             case PARANOID:      return (int)(Math.random() * this.hospitals.length) - this.hospitals.length/3;
@@ -167,6 +240,7 @@ public class HRGenerator {
 
     private int getCapacity(){
         switch(this.hospitalBehaviour){
+            case RATES_ALL:         return this.hospitalCount / this.residentCount + (int)(Math.random() * 5);
             case IN_CRISIS:         return this.maxHospitalCapacity - (int)(Math.random() * (this.maxHospitalCapacity/20));
             case UNDERSTAFFED:      return this.maxHospitalCapacity - (int)(Math.random() * (this.maxHospitalCapacity/10));
             case REGULAR_STAFF:     return (int)(Math.random() * (this.maxHospitalCapacity/2)) + this.maxHospitalCapacity/4;

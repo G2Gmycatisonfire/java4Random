@@ -27,6 +27,10 @@ public class Hospital extends Element {
             this.preferences.put(i, preferences[i]);
     }
 
+    public void addResidentToPreferences(Resident resident){
+        this.preferences.put(this.preferences.size(), resident);
+    }
+
     @Override
     public String toString() {
             return "Hospital \""
@@ -37,6 +41,8 @@ public class Hospital extends Element {
 
     @Override
     public Element getNextTryout() {
+        if(this.tryouts.containsAll(this.preferences.values()))
+            return null;
         return Objects.requireNonNull(this.preferences
                 .entrySet()
                 .stream()
@@ -48,17 +54,12 @@ public class Hospital extends Element {
 
     @Override
     public Element getLeastAppealingAssignee() {
-        //System.out.println("\t...Start find worst match debug");
         Element leastAppealing = null;
         for(Element pair : this.preferences.values()){
-           // System.out.println("\t" + this);
-            //System.out.println("\t" + pair);
             if(this.assignedTo.contains(pair)){
                 leastAppealing = pair;
-                //System.out.println("\t\t" + pair);
             }
         }
-        //System.out.println("\t...End find worst match debug");
         return leastAppealing;
     }
     public int getPreference(Element obj){
@@ -66,7 +67,6 @@ public class Hospital extends Element {
             return Integer.MAX_VALUE;
         for(Integer key : this.preferences.keySet()){
             if( this.preferences.get(key).equals(obj) ) {
-                //System.out.println("For " + this + "," + obj + "'s priority is " + key);
                 return key;
             }
         }

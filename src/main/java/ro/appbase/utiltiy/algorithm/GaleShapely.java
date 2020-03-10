@@ -14,47 +14,49 @@ public class GaleShapely implements Algorithm {
     long startTime;
     long finishTime;
 
-    public GaleShapely(Problem p) {
-        this.p = p;
+    public GaleShapely() {
+
     }
 
     @Override
     public void start() throws InterruptedException {
+        this.startTime = System.nanoTime();
+
         while(this.p.getS().getV().stream().anyMatch(Element::canAssign)){
-            //Thread.sleep(1000);
             Element node = this.p.getS().getV().stream()
                     .filter(Element::canAssign)
                     .findFirst()
                     .orElse(null);
 
-            //System.out.println(node);
-
             if(node != null){
                 Element match = node.getNextTryout();   node.getTryouts().add(match);
+                if(match == null){
+                    node.setCapacity(0);
+                    continue;
+                }
                 if( match.canAssign() ){
                     match.assign(node);
                     node.assign(match);
-                    //System.out.println(node + " matched to " + match);
                 }
                 else{
                     Element worstMatch = match.getLeastAppealingAssignee();
-                    //System.out.println("the worst match is = " + worstMatch);
                     if( match.getPreference(node) < match.getPreference(worstMatch) && worstMatch!=null ) {
                         worstMatch.free();
                         match.getAssignedTo().remove(worstMatch);
 
                         match.getAssignedTo().add(node);
                         node.getAssignedTo().add(match);
-                        //System.out.println(node + " with priority = " + match.getPreference(node) + " matched to " + match + ", removed " + worstMatch + " with priority = " + match.getPreference(worstMatch) + " matched to " + match);
                     }
                 }
             }
         }
 
+        this.finishTime = System.nanoTime();
+    }
 
-        //for(Element e : this.p.getS().getV()){
-       //     System.out.println(e + " is assigned to " + e.getAssignedTo().toString());
-        //}
+    @Override
+    public void setProblem(Problem p) {
+        this.p = p;
     }
 
     @Override
@@ -63,12 +65,12 @@ public class GaleShapely implements Algorithm {
     }
 
     @Override
-    public long getNanoRuntime() {
-        return 0;
+    public long getStartTime() {
+        return this.startTime;
     }
 
     @Override
-    public double getRuntime() {
-        return 0;
+    public long getFinishTime() {
+        return this.finishTime;
     }
 }

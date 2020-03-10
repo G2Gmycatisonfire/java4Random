@@ -17,9 +17,13 @@ public class Resident extends Element {
                 + this.name;
     }
 
+    public void addHospitalToPreferences(Hospital hospital){
+        this.preferences.put(this.preferences.size(), hospital);
+    }
+
     @Override
     public int getCapacity() {
-        return 1;
+        return this.capacity;
     }
 
     public void setPreferences(Hospital ... preferences){
@@ -35,7 +39,10 @@ public class Resident extends Element {
 
     @Override
     public Element getNextTryout() {
-        System.out.println("trying for "+  this.toString());
+        if(this.tryouts.containsAll(this.preferences.values()))
+            return null;
+        //.out.println("trying for "+  this.toString());
+        //System.out.println(this.getPreferences().toString() + "\n" + this.getTryouts().toString());
         return Objects.requireNonNull(this.preferences
                 .entrySet()
                 .stream()

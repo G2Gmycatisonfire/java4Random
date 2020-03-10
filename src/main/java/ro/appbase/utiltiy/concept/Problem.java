@@ -1,6 +1,5 @@
 package ro.appbase.utiltiy.concept;
 
-import javafx.util.converter.ShortStringConverter;
 import ro.appbase.object.Element;
 import ro.appbase.object.Hospital;
 import ro.appbase.object.Resident;
@@ -21,6 +20,7 @@ public class Problem {
     public static class Builder {
         private List<Resident> residents;
         private Set<Hospital> hospitals;
+        private Algorithm algorithm;
 
         public Builder withHospitals(Hospital ... hospitals){
             this.hospitals = new TreeSet<>(Comparator.comparing(Element::getName));
@@ -37,6 +37,12 @@ public class Problem {
             return this;
         }
 
+        public Builder withAlgorithm(Algorithm algorithm){
+            this.algorithm = algorithm;
+
+            return this;
+        }
+
         public Problem build(){
             Problem problem = new Problem();
 
@@ -44,7 +50,9 @@ public class Problem {
             problem.residents = this.residents;
             problem.t = new Partition(this.hospitals);
             problem.s = new Partition(this.residents);
-            problem.algorithm = new GaleShapely(problem);
+            problem.algorithm = this.algorithm;
+
+            problem.algorithm.setProblem(problem);
 
             return problem;
         }

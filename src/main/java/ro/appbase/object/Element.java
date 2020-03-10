@@ -24,9 +24,7 @@ public abstract class Element {
     }
 
     public void free(){
-        //System.out.println("BEFORE " + this.assignedTo.toString());
         this.assignedTo.clear();
-        //System.out.println("AFTER " + this.assignedTo.toString());
     }
 
     public boolean canAssign(){
@@ -38,6 +36,10 @@ public abstract class Element {
     }
 
     public abstract int getCapacity();
+
+    public void setCapacity(int capacity){
+        this.capacity = capacity;
+    }
 
     public String getName(){
         return this.name;

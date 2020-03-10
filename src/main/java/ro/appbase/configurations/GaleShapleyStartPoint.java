@@ -1,13 +1,14 @@
-package ro.appbase;
+package ro.appbase.configurations;
 
 import ro.appbase.object.Hospital;
 import ro.appbase.object.Resident;
+import ro.appbase.utiltiy.algorithm.GaleShapely;
 import ro.appbase.utiltiy.concept.Problem;
 import ro.appbase.utiltiy.concept.Solution;
 
 import java.util.Objects;
 import java.util.function.Predicate;
-public class StartPoint {
+public class GaleShapleyStartPoint {
     public static void main(String[] args){
         Resident[] residents = new Resident[]{
                 new Resident("R0"),
@@ -34,6 +35,7 @@ public class StartPoint {
         Problem p = new Problem.Builder()
                 .withHospitals(hospitals)
                 .withResidents(residents)
+                .withAlgorithm(new GaleShapely())
                 .build();
 
         //p.printPreferences();

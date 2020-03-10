@@ -1,19 +1,26 @@
+package ro.appbase.configurations;
+
 import com.github.javafaker.Faker;
 import ro.appbase.object.Hospital;
 import ro.appbase.object.Resident;
+import ro.appbase.utiltiy.algorithm.GaleShapely;
+import ro.appbase.utiltiy.algorithm.PriorityAssignment;
 import ro.appbase.utiltiy.concept.Problem;
 import ro.appbase.utiltiy.concept.Solution;
+import ro.appbase.utiltiy.randomiser.HRGenerator;
 
 import java.util.Arrays;
 
-public class JavaFakerTest {
+public class RandomNamesStartPoint {
     public static void main(String[] args) {
         HRGenerator test = new HRGenerator.HRBuilder()
                 .withHospitalCount(100)
                 .withResidentCount(100)
-                .withHospitalStaffBehaviour(HRGenerator.HospitalParameters.REGULAR_STAFF)
+                .withHospitalStaffBehaviour(HRGenerator.HospitalParameters.RATES_ALL)
                 .withMaxHospitalCapacity(10)
-                .withResidentBehaviour(HRGenerator.ResidentParameters.REGULAR)
+                .withResidentBehaviour(HRGenerator.ResidentParameters.RATES_ALL)
+                .doubleCheckForUnwantedHospitals(true)
+                .doubleCheckForUnwantedResidents(true)
                 .build();
 
         System.out.println(Arrays.toString(test.getResidents()));
@@ -39,6 +46,7 @@ public class JavaFakerTest {
         Problem p = new Problem.Builder()
                 .withHospitals(test.getHospitals())
                 .withResidents(test.getResidents())
+                .withAlgorithm(new PriorityAssignment())
                 .build();
 
         System.out.println(p);
