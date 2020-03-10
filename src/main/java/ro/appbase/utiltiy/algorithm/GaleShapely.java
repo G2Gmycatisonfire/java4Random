@@ -40,7 +40,7 @@ public class GaleShapely implements Algorithm {
                 }
                 else{
                     Element worstMatch = match.getLeastAppealingAssignee();
-                    if( match.getPreference(node) < match.getPreference(worstMatch) && worstMatch!=null ) {
+                    if( match.getPreference(node) < match.getPreference(worstMatch) && worstMatch!=null && worstMatch.hasWhereToGo() ) {
                         worstMatch.free();
                         match.getAssignedTo().remove(worstMatch);
 
