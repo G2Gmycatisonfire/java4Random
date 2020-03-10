@@ -1,5 +1,7 @@
 package ro.appbase.object;
 
+import javafx.util.Pair;
+
 import java.util.*;
 import java.util.stream.Stream;
 
@@ -17,6 +19,10 @@ public class Resident extends Element {
                 + this.name;
     }
 
+    public boolean hasWhereToGo() {
+        return !this.tryouts.containsAll(this.preferences.values());
+    }
+
     public void addHospitalToPreferences(Hospital hospital){
         this.preferences.put(this.preferences.size(), hospital);
     }
@@ -26,10 +32,20 @@ public class Resident extends Element {
         return this.capacity;
     }
 
+    public void setPreferences(Pair<Hospital, Integer>... preferences){
+        this.preferences = new HashMap<>();
+        for(int i = 0; i < preferences.length; i++){
+            this.preferences.put(i, preferences[i].getKey());
+            this.priority.put(preferences[i].getKey(), preferences[i].getValue());
+        }
+    }
+
     public void setPreferences(Hospital ... preferences){
         this.preferences = new HashMap<>();
-        for(int i = 0; i < preferences.length; i++)
+        for(int i = 0; i < preferences.length; i++){
             this.preferences.put(i, preferences[i]);
+            this.priority.put(preferences[i], i);
+        }
     }
 
     @Override
@@ -72,7 +88,7 @@ public class Resident extends Element {
     public int getPreference(Element obj){
         for(Integer key : this.preferences.keySet()){
             if( this.preferences.get(key).equals(obj) )
-                return key;
+                return this.priority.get(obj);
         }
         return Integer.MAX_VALUE;
     }

@@ -7,12 +7,14 @@ public abstract class Element {
     protected String name;
     protected Set<Element> assignedTo;
     protected Set<Element> tryouts;
+    protected Map<Element, Integer> priority;
 
     protected Element(String name, int capacity){
         this.name = name;
         this.capacity = capacity;
         this.assignedTo = new TreeSet<>(Comparator.comparing(Element::getName));
         this.tryouts = new HashSet<>();
+        this.priority = new HashMap<>();
     }
 
     public Set<Element> getTryouts() {
@@ -22,6 +24,12 @@ public abstract class Element {
     public Set<Element> getAssignedTo(){
         return this.assignedTo;
     }
+
+    public Map<Element, Integer> getPriority(){
+        return this.priority;
+    }
+
+    public abstract boolean hasWhereToGo();
 
     public void free(){
         this.assignedTo.clear();

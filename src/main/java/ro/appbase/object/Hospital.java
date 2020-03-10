@@ -1,5 +1,7 @@
 package ro.appbase.object;
 
+import javafx.util.Pair;
+
 import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Objects;
@@ -12,6 +14,11 @@ public class Hospital extends Element {
     }
 
     @Override
+    public boolean hasWhereToGo() {
+        return !this.tryouts.containsAll(this.preferences.values());
+    }
+
+    @Override
     public int getCapacity() {
         return this.capacity;
     }
@@ -21,10 +28,20 @@ public class Hospital extends Element {
         return this.preferences;
     }
 
+    public void setPreferences(Pair<Resident,Integer>... preferences){
+        this.preferences = new LinkedHashMap<>();
+        for(int i = 0; i < preferences.length; i++) {
+            this.preferences.put(i, preferences[i].getKey());
+            this.priority.put(preferences[i].getKey(), preferences[i].getValue());
+        }
+    }
+
     public void setPreferences(Resident ... preferences){
         this.preferences = new LinkedHashMap<>();
-        for(int i = 0; i < preferences.length; i++)
+        for(int i = 0; i < preferences.length; i++) {
             this.preferences.put(i, preferences[i]);
+            this.priority.put(preferences[i], i);
+        }
     }
 
     public void addResidentToPreferences(Resident resident){
@@ -33,10 +50,10 @@ public class Hospital extends Element {
 
     @Override
     public String toString() {
-            return "Hospital \""
-                    + this.name
-                    + "\", capacity = "
-                    + this.capacity;
+        return "Hospital \""
+                + this.name
+                + "\", capacity = "
+                + this.capacity;
     }
 
     @Override
