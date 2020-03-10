@@ -5,11 +5,23 @@ import ro.appbase.utiltiy.concept.Problem;
 import ro.appbase.utiltiy.concept.Solution;
 import ro.appbase.utiltiy.graph.Matching;
 
+/**
+ * Class PriorityAssignment, implementation of Algorithm
+ *
+ * Creates matching based on Hospital requirements
+ *
+ * [OPTIONAL]
+ *
+ * @author Loghin Vlad
+ */
 public class PriorityAssignment implements Algorithm {
     private Problem p;
     private long startTime;
     private long finishTime;
 
+    /**
+     * Constructor
+     */
     public PriorityAssignment(){
 
     }

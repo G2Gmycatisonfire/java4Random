@@ -6,9 +6,6 @@ import ro.appbase.utiltiy.algorithm.GaleShapely;
 import ro.appbase.utiltiy.concept.Problem;
 import ro.appbase.utiltiy.concept.Solution;
 
-import java.util.Objects;
-import java.util.function.Predicate;
-
 /**
  * CLass GaleShapleyStartPoint
  *
@@ -58,5 +55,6 @@ public class GaleShapleyStartPoint {
         Solution s = p.getAlgorithm().getSolution();
 
         System.out.println(s);
+        System.out.println(p.getAlgorithm().runtimeToString());
     }
 }

@@ -59,6 +59,7 @@ public class PriorityAssignmentStartPoint {
         }
 
         System.out.println(p.getAlgorithm().getSolution());
+        System.out.println(p.getAlgorithm().runtimeToString());
 
         ///VERIFY IF MATCHING IS STABLE
         System.out.println(PerfectMatchingChecker.isMatchingPerfect(p));

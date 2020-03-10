@@ -7,8 +7,8 @@ import ro.appbase.utiltiy.algorithm.GaleShapely;
 import ro.appbase.utiltiy.concept.Problem;
 import ro.appbase.utiltiy.concept.Solution;
 
-import java.util.Objects;
-import java.util.function.Predicate;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Class EqualPriorityStartPoint
@@ -36,41 +36,46 @@ public class EqualPriorityStartPoint {
                 new Hospital("H2",2)
         };
 
-        residents[0].setPreferences(
-                new Pair<>(hospitals[0], 0),
-                new Pair<>(hospitals[1], 1),
-                new Pair<>(hospitals[2], 1)
-        );
-        residents[1].setPreferences(
-                new Pair<>(hospitals[0], 0),
-                new Pair<>(hospitals[1], 1),
-                new Pair<>(hospitals[2], 2)
-        );
-        residents[2].setPreferences(
-                new Pair<>(hospitals[0], 0),
-                new Pair<>(hospitals[1], 1)
-        );
-        residents[3].setPreferences(
-                new Pair<>(hospitals[0], 0),
-                new Pair<>(hospitals[2], 1)
-        );
+        List<Pair<Hospital, Integer>> residentPreferences = new ArrayList<>();
+        residentPreferences.add(new Pair<>(hospitals[0], 0));
+        residentPreferences.add(new Pair<>(hospitals[1], 1));
+        residentPreferences.add(new Pair<>(hospitals[2], 1));
+        residents[0].setPreferences(residentPreferences);
 
-        hospitals[0].setPreferences(
-                new Pair<>(residents[3], 0),
-                new Pair<>(residents[0], 1),
-                new Pair<>(residents[1], 2),
-                new Pair<>(residents[2], 3)
-        );
-        hospitals[1].setPreferences(
-                new Pair<>(residents[0], 0),
-                new Pair<>(residents[1], 1),
-                new Pair<>(residents[2], 2)
-        );
-        hospitals[2].setPreferences(
-                new Pair<>(residents[0], 0),
-                new Pair<>(residents[1], 1),
-                new Pair<>(residents[3], 2)
-        );
+        residentPreferences.clear();
+        residentPreferences.add(new Pair<>(hospitals[0], 0));
+        residentPreferences.add(new Pair<>(hospitals[1], 1));
+        residentPreferences.add(new Pair<>(hospitals[2], 2));
+        residents[1].setPreferences(residentPreferences);
+
+        residentPreferences.clear();
+        residentPreferences.add(new Pair<>(hospitals[0], 0));
+        residentPreferences.add(new Pair<>(hospitals[1], 1));
+        residents[2].setPreferences(residentPreferences);
+
+        residentPreferences.clear();
+        residentPreferences.add(new Pair<>(hospitals[0], 0));
+        residentPreferences.add(new Pair<>(hospitals[2], 1));
+        residents[3].setPreferences(residentPreferences);
+
+        List<Pair<Resident, Integer>> hospitalPreferences = new ArrayList<>();
+        hospitalPreferences.add(new Pair<>(residents[3], 0));
+        hospitalPreferences.add(new Pair<>(residents[0], 1));
+        hospitalPreferences.add(new Pair<>(residents[1], 2));
+        hospitalPreferences.add(new Pair<>(residents[2], 3));
+        hospitals[0].setPreferences(hospitalPreferences);
+
+        hospitalPreferences.clear();
+        hospitalPreferences.add(new Pair<>(residents[0], 0));
+        hospitalPreferences.add(new Pair<>(residents[1], 1));
+        hospitalPreferences.add(new Pair<>(residents[2], 2));
+        hospitals[1].setPreferences(hospitalPreferences);
+
+        hospitalPreferences.clear();
+        hospitalPreferences.add(new Pair<>(residents[0], 0));
+        hospitalPreferences.add(new Pair<>(residents[1], 1));
+        hospitalPreferences.add(new Pair<>(residents[3], 2));
+        hospitals[2].setPreferences(hospitalPreferences);
 
         Problem p = new Problem.Builder()
                 .withHospitals(hospitals)
@@ -88,7 +93,6 @@ public class EqualPriorityStartPoint {
         Solution s = p.getAlgorithm().getSolution();
 
         System.out.println(s);
-
-        p.printPreferences();
+        System.out.println(p.getAlgorithm().runtimeToString());
     }
 }

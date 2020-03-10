@@ -67,5 +67,6 @@ public class RandomNamesStartPoint {
         Solution s = p.getAlgorithm().getSolution();
 
         System.out.println(s);
+        System.out.println(p.getAlgorithm().runtimeToString());
     }
 }

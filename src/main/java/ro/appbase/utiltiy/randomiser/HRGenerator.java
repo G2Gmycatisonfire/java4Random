@@ -1,13 +1,26 @@
 package ro.appbase.utiltiy.randomiser;
 
 import com.github.javafaker.Faker;
-import ro.appbase.object.*;
+import ro.appbase.object.Hospital;
+import ro.appbase.object.Resident;
 
 import java.util.HashSet;
 import java.util.Set;
 
+/**
+ * HRGenerator Class
+ *
+ * [OPTIONAL]
+ *
+ * @author Loghin Vlad
+ */
 public class HRGenerator {
 
+    /**
+     * Enum ResidentParameters
+     *
+     * Describes resident assignment behaviour options
+     */
     public enum ResidentParameters{
         RATES_ALL,
         PARANOID,
@@ -19,6 +32,11 @@ public class HRGenerator {
         RANDOM
     }
 
+    /**
+     * Enum ResidentParameters
+     *
+     * Describes hospital assignment behaviour options
+     */
     public enum HospitalParameters{
         RATES_ALL,
         IN_CRISIS,
@@ -42,6 +60,13 @@ public class HRGenerator {
     private Resident[] residents;
     private Hospital[] hospitals;
 
+    /**
+     * Nested Class HRBuilder
+     *
+     * [completely optional] [Builder Pattern]
+     *
+     * @author Loghin Vlad
+     */
     public static class HRBuilder{
         public final int DEFAULT_RESIDENT_COUNT = 100;
         public final int DEFAULT_HOSPITAL_COUNT = 50;
@@ -58,41 +83,86 @@ public class HRGenerator {
         private boolean doubleCheckResidents = false;
         private boolean doubleCheckHospitals = false;
 
+        /**
+         * assigner for number of generated residents
+         * @param residentCount number of residents
+         * @return pointer to this Builder object
+         */
         public HRBuilder withResidentCount(int residentCount){
             this.residentCount = residentCount;
             return this;
         }
 
+        /**
+         * assigner for number of generated hospitals
+         * @param hospitalCount number of hospitals
+         * @return pointer to this Builder object
+         */
         public HRBuilder withHospitalCount(int hospitalCount){
             this.hospitalCount = hospitalCount;
             return this;
         }
 
+        /**
+         * assigner for hospital max capacity
+         * @param maxHospitalCapacity capacity of hospitals
+         * @return pointer to this Builder object
+         */
         public HRBuilder withMaxHospitalCapacity(int maxHospitalCapacity){
             this.maxHospitalCapacity = maxHospitalCapacity;
             return this;
         }
 
+        /**
+         * assigner for resident assignment behaviour
+         * @param residentBehaviour enum value of behaviour
+         * @return pointer to this Builder object
+         */
         public HRBuilder withResidentBehaviour(ResidentParameters residentBehaviour){
             this.residentBehaviour = residentBehaviour;
             return this;
         }
 
+        /**
+         * assigner for hospital assignment behaviour
+         * @param hospitalStaffBehaviour enum value of behaviour
+         * @return pointer to this Builder object
+         */
         public HRBuilder withHospitalStaffBehaviour(HospitalParameters hospitalStaffBehaviour){
             this.hospitalBehaviour = hospitalStaffBehaviour;
             return this;
         }
 
+        /**
+         * assigner for double checker option for residents
+         *
+         * Checks whether any residents have no hospitals matched
+         *
+         * @param doubleCheck boolean telling whether to double check or not
+         * @return pointer to this Builder object
+         */
         public HRBuilder doubleCheckForUnwantedResidents(boolean doubleCheck){
             this.doubleCheckResidents = doubleCheck;
             return this;
         }
 
+        /**
+         * assigner for double checker option for hospitals
+         *
+         * Checks whether any hospitals have no residents matched
+         *
+         * @param doubleCheck boolean telling whether to double check or not
+         * @return pointer to this Builder object
+         */
         public HRBuilder doubleCheckForUnwantedHospitals(boolean doubleCheck){
             this.doubleCheckHospitals = doubleCheck;
             return this;
         }
 
+        /**
+         * build Method, called last, returns built object
+         * @return pointer to the built HRGenerator object
+         */
         public HRGenerator build(){
             HRGenerator generated = new HRGenerator();
 
@@ -117,6 +187,10 @@ public class HRGenerator {
         }
     }
 
+    /**
+     * Method assigning unassigned residents
+     * @throws NullPointerException if any hospitals do not exist (statistically unimportant)
+     */
     private void checkForUnassignedResidents() throws NullPointerException{
         for(Resident r : this.residents){
             boolean hasHospital = false;
@@ -140,6 +214,10 @@ public class HRGenerator {
         }
     }
 
+    /**
+     * Method assigning unassigned hospitals
+     * @throws NullPointerException if any residents do not exist (statistically unimportant)
+     */
     private void checkForUnassignedHospitals() throws NullPointerException{
         for(Hospital h : this.hospitals){
             boolean hasResident = false;
@@ -163,6 +241,9 @@ public class HRGenerator {
         }
     }
 
+    /**
+     * method called to assign residents to hospitals' preferences
+     */
     private void assignResidents(){
         Set<Hospital> preferences = new HashSet<>();
         int which;
@@ -182,6 +263,9 @@ public class HRGenerator {
         }
     }
 
+    /**
+     * method called to assign hospitals to residents' preferences
+     */
     private void assignHospitals(){
         Set<Resident> preferences = new HashSet<>();
         int which;
@@ -208,17 +292,27 @@ public class HRGenerator {
         }
     }
 
+    /**
+     * method called to assign both residents to hospitals and hospitals to residents
+     */
     private void assign(){
         this.assignResidents();
         this.assignHospitals();
     }
 
+    /**
+     * method called to generate hospitals with random names
+     */
     private void generateHospitals(){
         this.hospitals = new Hospital[this.hospitalCount];
         for(int i = 0; i < this.residentCount; i++)
             this.hospitals[i] = new Hospital(this.nameGenerator.medical().hospitalName(), this.getCapacity());
     }
 
+    /**
+     * method called to get a number of choices in preferences for residents based on behaviour
+     * @return value of number of choices
+     */
     private int getResidentChoiceCount(){
         switch(this.residentBehaviour){
             case RATES_ALL:     return this.hospitals.length;
@@ -232,6 +326,10 @@ public class HRGenerator {
         }
     }
 
+    /**
+     * method called to get a number of choices in preferences for hospitals based on behaviour
+     * @return value of number of choices
+     */
     private int getCapacity(){
         switch(this.hospitalBehaviour){
             case RATES_ALL:         return this.hospitalCount / this.residentCount + (int)(Math.random() * 5);
@@ -246,20 +344,34 @@ public class HRGenerator {
         }
     }
 
+    /**
+     * method called to generate residents with random names
+     */
     private void generateResidents(){
         this.residents = new Resident[this.residentCount];
         for(int i = 0; i < this.residentCount; i++)
             this.residents[i] = new Resident(this.nameGenerator.name().fullName());
     }
 
+    /**
+     * Constructor, private, called by builder
+     */
     private HRGenerator(){
 
     }
 
+    /**
+     * Getter for residents
+     * @return pointer to an array of Residents
+     */
     public Resident[] getResidents(){
         return this.residents;
     }
 
+    /**
+     * Getter for hospitals
+     * @return pointer to an array of Hospitals
+     */
     public Hospital[] getHospitals(){
         return this.hospitals;
     }

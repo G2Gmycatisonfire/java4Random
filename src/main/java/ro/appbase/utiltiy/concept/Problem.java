@@ -8,6 +8,13 @@ import ro.appbase.utiltiy.graph.Partition;
 
 import java.util.*;
 
+/**
+ * Class Problem
+ *
+ * [OPTIONAL]
+ *
+ * @author Loghin Vlad
+ */
 public class Problem {
     private Partition s;
     private Partition t;
@@ -15,11 +22,23 @@ public class Problem {
     private Set<Hospital> hospitals;
     private Algorithm algorithm;
 
+    /**
+     * Nested Class Builder
+     *
+     * [completely optional] [Builder Pattern]
+     *
+     * @author Loghin Vlad
+     */
     public static class Builder {
         private List<Resident> residents;
         private Set<Hospital> hospitals;
         private Algorithm algorithm;
 
+        /**
+         * Method used to assign hospitals to problem builder
+         * @param hospitals Varargs of Hospital
+         * @return pointer to the builder
+         */
         public Builder withHospitals(Hospital ... hospitals){
             this.hospitals = new TreeSet<>(Comparator.comparing(Element::getName));
             this.hospitals.addAll(Arrays.asList(hospitals));
@@ -27,6 +46,11 @@ public class Problem {
             return this;
         }
 
+        /**
+         * Method used to assign residents to problem builder
+         * @param residents Varargs of Resident
+         * @return pointer to the builder
+         */
         public Builder withResidents(Resident ... residents){
             this.residents = new ArrayList<>();
             this.residents.addAll(Arrays.asList(residents));
@@ -35,12 +59,21 @@ public class Problem {
             return this;
         }
 
+        /**
+         * Method used to assign algorithm
+         * @param algorithm pointer to the Algorithm
+         * @return pointer to the builder
+         */
         public Builder withAlgorithm(Algorithm algorithm){
             this.algorithm = algorithm;
 
             return this;
         }
 
+        /**
+         * build Method, called last, returns built object
+         * @return pointer to the Problem built object
+         */
         public Problem build(){
             Problem problem = new Problem();
 
@@ -56,18 +89,33 @@ public class Problem {
         }
     }
 
+    /**
+     * Constructor, private (called in builder)
+     */
     private Problem(){
 
     }
 
+    /**
+     * Getter for Residents in problem
+     * @return pointer to the List of residents
+     */
     public List<Resident> getResidents() {
         return this.residents;
     }
 
+    /**
+     * Getter for Hospitals in problem
+     * @return pointer to the Set of residents
+     */
     public Set<Hospital> getHospitals() {
         return this.hospitals;
     }
 
+    /**
+     * Overridden toString Method
+     * @return String interpretation of the problem's input
+     */
     public String toString(){
         return "Problem instance : \nResidents = "
                 + this.residents.toString()
@@ -77,11 +125,17 @@ public class Problem {
                 + this.preferencesToString();
     }
 
+    /**
+     * Method called to print all objects' preferences
+     */
     public void printPreferences(){
         this.printResidentsPreferences();
         this.printHospitalPreferences();
     }
 
+    /**
+     * Method called to print Residents' preferences
+     */
     public void printResidentsPreferences(){
         for(Resident resident : this.residents) {
             System.out.print(resident.getPreferences().toString());
@@ -89,6 +143,9 @@ public class Problem {
         }
     }
 
+    /**
+     * Method called to print Hospitals' preferences
+     */
     public void printHospitalPreferences(){
         for(Hospital hospital : this.hospitals){
             System.out.print(hospital.getPreferences().toString());
@@ -96,10 +153,18 @@ public class Problem {
         }
     }
 
+    /**
+     * Method called to turn preferences into String
+     * @return String of preferences tables
+     */
     private String preferencesToString(){
         return this.residentsPreferencesToString() + this.hospitalsPreferencesToString();
     }
 
+    /**
+     * Method called to turn residents' preferences to String
+     * @return String of residents' preferences table
+     */
     private String residentsPreferencesToString(){
         StringBuilder result = new StringBuilder();
         for(Resident resident : this.residents)
@@ -107,6 +172,10 @@ public class Problem {
         return result.toString();
     }
 
+    /**
+     * Method called to turn hospitals' preferences to String
+     * @return String of hospitals' preferences table
+     */
     private String hospitalsPreferencesToString(){
         StringBuilder result = new StringBuilder();
         for(Hospital hospital : this.hospitals)
@@ -114,14 +183,26 @@ public class Problem {
         return result.toString();
     }
 
+    /**
+     * Getter for Partition S
+     * @return pointer to the partition
+     */
     public Partition getS() {
         return this.s;
     }
 
+    /**
+     * Getter for Partition T
+     * @return pointer to the partition
+     */
     public Partition getT() {
         return this.t;
     }
 
+    /**
+     * Getter for the Algorithm
+     * @return pointer to the algorithm
+     */
     public Algorithm getAlgorithm(){
         return this.algorithm;
     }

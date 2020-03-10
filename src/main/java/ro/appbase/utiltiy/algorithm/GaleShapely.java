@@ -5,11 +5,23 @@ import ro.appbase.utiltiy.concept.Problem;
 import ro.appbase.utiltiy.concept.Solution;
 import ro.appbase.utiltiy.graph.Matching;
 
+/**
+ * Class GaleShapley, implementation of Algorithm
+ *
+ * Generates perfect matching
+ *
+ * [BONUS]
+ *
+ * @author Loghin Vlad
+ */
 public class GaleShapely implements Algorithm {
     private Problem p;
     long startTime;
     long finishTime;
 
+    /**
+     * Constructor
+     */
     public GaleShapely() {
 
     }
