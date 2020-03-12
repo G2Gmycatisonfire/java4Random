@@ -2,7 +2,7 @@ package ro.appbase.configurations;
 
 import ro.appbase.object.Hospital;
 import ro.appbase.object.Resident;
-import ro.appbase.utiltiy.algorithm.PriorityAssignment;
+import ro.appbase.utiltiy.algorithm.GaleShapely;
 import ro.appbase.utiltiy.concept.Problem;
 import ro.appbase.utiltiy.concept.Solution;
 import ro.appbase.utiltiy.graph.PerfectMatchingChecker;
@@ -53,7 +53,7 @@ public class RandomNamesStartPoint {
         Problem p = new Problem.Builder()
                 .withHospitals(test.getHospitals())
                 .withResidents(test.getResidents())
-                .withAlgorithm(new PriorityAssignment())
+                .withAlgorithm(new GaleShapely())
                 .build();
 
         System.out.println(p);
