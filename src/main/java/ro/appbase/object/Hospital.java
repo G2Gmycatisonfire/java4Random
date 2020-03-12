@@ -139,7 +139,7 @@ public class Hospital extends Element {
             return Integer.MAX_VALUE;
         for(Integer key : this.preferences.keySet())
             if( this.preferences.get(key).equals(obj) )
-                return key;
+                return this.priority.get(obj);
         return Integer.MAX_VALUE;
     }
 }

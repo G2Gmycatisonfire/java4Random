@@ -21,6 +21,7 @@ public class Problem {
     private List<Resident> residents;
     private Set<Hospital> hospitals;
     private Algorithm algorithm;
+    private boolean checkForMultipleMatchings;
 
     /**
      * Nested Class Builder
@@ -33,6 +34,17 @@ public class Problem {
         private List<Resident> residents;
         private Set<Hospital> hospitals;
         private Algorithm algorithm;
+        private boolean checkForMultipleMatchings = false;
+
+        /**
+         * Method used to enable a different method of generating a matching, used to demonstrate bonus task 3
+         * @param condition true or false as in toggle or do not toggle
+         * @return pointer to the builder
+         */
+        public Builder checkForMoreMatchings(boolean condition){
+            this.checkForMultipleMatchings = condition;
+            return this;
+        }
 
         /**
          * Method used to assign hospitals to problem builder
@@ -82,6 +94,7 @@ public class Problem {
             problem.t = new Partition(this.hospitals);
             problem.s = new Partition(this.residents);
             problem.algorithm = this.algorithm;
+            problem.checkForMultipleMatchings = this.checkForMultipleMatchings;
 
             problem.algorithm.setProblem(problem);
 
@@ -94,6 +107,14 @@ public class Problem {
      */
     private Problem(){
 
+    }
+
+    /**
+     * Method called to check whether to generate matching with < or  <= priority, used in bonus task 3
+     * @return true if <=, false if <
+     */
+    public boolean checkForMatchings(){
+        return this.checkForMultipleMatchings;
     }
 
     /**
@@ -138,6 +159,7 @@ public class Problem {
      */
     public void printResidentsPreferences(){
         for(Resident resident : this.residents) {
+            System.out.print(resident + "'s preferences = ");
             System.out.print(resident.getPreferences().toString());
             System.out.print("\n");
         }
@@ -148,6 +170,7 @@ public class Problem {
      */
     public void printHospitalPreferences(){
         for(Hospital hospital : this.hospitals){
+            System.out.print(hospital + "'s preferences = ");
             System.out.print(hospital.getPreferences().toString());
             System.out.print("\n");
         }

@@ -6,6 +6,7 @@ import ro.appbase.object.Resident;
 import ro.appbase.utiltiy.algorithm.GaleShapely;
 import ro.appbase.utiltiy.concept.Problem;
 import ro.appbase.utiltiy.concept.Solution;
+import ro.appbase.utiltiy.graph.PerfectMatchingChecker;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -13,9 +14,9 @@ import java.util.List;
 /**
  * Class EqualPriorityStartPoint
  *
- * Source describing bonus requirement 1 and 3
+ * Source describing bonus requirement 1
  *
- * --- Requirement 3 is theoretical ---
+ * --- Requirement 3 is theoretical, has an example in MultipleMatching start point ---
  *
  * [BONUS]
  *
@@ -94,5 +95,7 @@ public class EqualPriorityStartPoint {
 
         System.out.println(s);
         System.out.println(p.getAlgorithm().runtimeToString());
+
+        System.out.println("Is matching perfect : " + PerfectMatchingChecker.isMatchingPerfect(p));
     }
 }

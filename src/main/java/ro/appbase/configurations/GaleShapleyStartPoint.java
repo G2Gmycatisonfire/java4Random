@@ -5,6 +5,7 @@ import ro.appbase.object.Resident;
 import ro.appbase.utiltiy.algorithm.GaleShapely;
 import ro.appbase.utiltiy.concept.Problem;
 import ro.appbase.utiltiy.concept.Solution;
+import ro.appbase.utiltiy.graph.PerfectMatchingChecker;
 
 /**
  * CLass GaleShapleyStartPoint
@@ -56,5 +57,7 @@ public class GaleShapleyStartPoint {
 
         System.out.println(s);
         System.out.println(p.getAlgorithm().runtimeToString());
+
+        System.out.println("Is matching perfect : " + PerfectMatchingChecker.isMatchingPerfect(p));
     }
 }

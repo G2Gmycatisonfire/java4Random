@@ -5,6 +5,7 @@ import ro.appbase.object.Resident;
 import ro.appbase.utiltiy.algorithm.PriorityAssignment;
 import ro.appbase.utiltiy.concept.Problem;
 import ro.appbase.utiltiy.concept.Solution;
+import ro.appbase.utiltiy.graph.PerfectMatchingChecker;
 import ro.appbase.utiltiy.randomiser.HRGenerator;
 
 import java.util.Arrays;
@@ -68,5 +69,7 @@ public class RandomNamesStartPoint {
 
         System.out.println(s);
         System.out.println(p.getAlgorithm().runtimeToString());
+
+        System.out.println("Is matching perfect : " + PerfectMatchingChecker.isMatchingPerfect(p));
     }
 }

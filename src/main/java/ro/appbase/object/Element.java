@@ -30,6 +30,14 @@ public abstract class Element {
     }
 
     /**
+     * Method called to reset tryouts for each element, useful when same sets
+     * are acting in multiple problems
+     */
+    public void clearTryouts(){
+        this.tryouts.clear();
+    }
+
+    /**
      * Getter for tryouts Set (Elements which this Element has already tried matching with)
      * @return pointer to the set
      */

@@ -30,6 +30,11 @@ public class GaleShapely implements Algorithm {
     public void start() throws InterruptedException {
         this.startTime = System.nanoTime();
 
+        this.p.getS().getV().forEach(Element::free);
+        this.p.getT().getV().forEach(Element::free);
+        this.p.getS().getV().forEach(Element::clearTryouts);
+        this.p.getT().getV().forEach(Element::clearTryouts);
+
         while(this.p.getS().getV().stream().anyMatch(Element::canAssign)){
             Element node = this.p.getS().getV().stream()
                     .filter(Element::canAssign)
@@ -48,12 +53,22 @@ public class GaleShapely implements Algorithm {
                 }
                 else{
                     Element worstMatch = match.getLeastAppealingAssignee();
+                    if( !this.p.checkForMatchings() )
                     if( match.getPreference(node) < match.getPreference(worstMatch) && worstMatch!=null && worstMatch.hasWhereToGo() ) {
-                        worstMatch.free();
+                       worstMatch.free();
                         match.getAssignedTo().remove(worstMatch);
 
                         match.getAssignedTo().add(node);
                         node.getAssignedTo().add(match);
+                    }
+                    else {      ///used in bonus req 3
+                        if(match.getPreference(node) <= match.getPreference(worstMatch) && worstMatch != null && worstMatch.hasWhereToGo()) {
+                            worstMatch.free();
+                            match.getAssignedTo().remove(worstMatch);
+
+                            match.getAssignedTo().add(node);
+                            node.getAssignedTo().add(match);
+                        }
                     }
                 }
             }
