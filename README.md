@@ -1,9 +1,9 @@
 # FII LAB 4 JAVA
-##Loghin Vlad-Andrei
+## Loghin Vlad-Andrei
 
-*Compulsory
-*Optional
-*Bonus
+* Compulsory
+* Optional
+* Bonus
 
 Am facut configuratii diferite pentru a exemplifica usor cerintele laboratorului (in package-ul configuration)
 * Compulsory - toate cerintele de la categoria Compulsory
